@@ -66,7 +66,7 @@ class Submit implements HttpPostActionInterface
             return $redirect;
         }
 
-        $name = (string)$product->getName();
+        $productName = (string)$product->getName();
         $priced = $product;
         $variantId = null;
         if ($this->offerProduct->isConfigurable($product)) {
@@ -77,14 +77,14 @@ class Submit implements HttpPostActionInterface
             }
             $priced = $variant['product'];
             $variantId = (int)$priced->getId();
-            $name .= ' (' . $variant['name'] . ')';
+            $productName .= ' (' . $variant['name'] . ')';
         }
 
         $offer = [
             'product_id' => (int)$product->getId(),
             'variant_id' => $variantId,
             'store_id' => (int)$store->getId(),
-            'product_name' => $name,
+            'product_name' => $productName,
             'product_sku' => (string)$priced->getSku(),
             'product_price' => $this->offerProduct->getShownPrice($priced, $store, (string)$store->getCurrentCurrencyCode()),
             'price' => $price,
