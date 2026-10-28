@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Grid collection straight off the table: no model or resource model needed -->
+    <virtualType name="Kkkonrad\PriceOffer\Model\GridCollection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">kkkonrad_price_offer</argument>
+            <argument name="identifierName" xsi:type="string">offer_id</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="kkkonrad_priceoffer_listing_data_source" xsi:type="string">Kkkonrad\PriceOffer\Model\GridCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\SalesRule\Model\ValidateCoupon">
+        <plugin name="kkkonrad_priceoffer_coupon" type="Kkkonrad\PriceOffer\Plugin\ValidateCouponPlugin"/>
+    </type>
+</config>

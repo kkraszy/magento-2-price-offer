@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">kkkonrad_priceoffer_listing.kkkonrad_priceoffer_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>kkkonrad_priceoffer_columns</spinner>
+        <deps>
+            <dep>kkkonrad_priceoffer_listing.kkkonrad_priceoffer_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="kkkonrad_priceoffer_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">offer_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Kkkonrad_PriceOffer::offers</aclResource>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider"
+                      name="kkkonrad_priceoffer_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>offer_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters"/>
+        <paging name="listing_paging"/>
+        <massaction name="listing_massaction">
+            <action name="accept">
+                <settings>
+                    <url path="kkkonrad_priceoffer/offer/massStatus/status/accepted"/>
+                    <type>accept</type>
+                    <label translate="true">Accept and notify customer</label>
+                    <confirm>
+                        <title translate="true">Accept offers</title>
+                        <message translate="true">Accept the selected offers and email the customers?</message>
+                    </confirm>
+                </settings>
+            </action>
+            <action name="reject">
+                <settings>
+                    <url path="kkkonrad_priceoffer/offer/massStatus/status/rejected"/>
+                    <type>reject</type>
+                    <label translate="true">Reject and notify customer</label>
+                    <confirm>
+                        <title translate="true">Reject offers</title>
+                        <message translate="true">Reject the selected offers and email the customers?</message>
+                    </confirm>
+                </settings>
+            </action>
+        </massaction>
+    </listingToolbar>
+    <columns name="kkkonrad_priceoffer_columns">
+        <selectionsColumn name="ids">
+            <settings>
+                <indexField>offer_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="offer_id" sortOrder="10">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" sortOrder="20">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Date</label>
+            </settings>
+        </column>
+        <column name="product_name" sortOrder="30">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Product</label>
+            </settings>
+        </column>
+        <column name="product_sku" sortOrder="40">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">SKU</label>
+            </settings>
+        </column>
+        <column name="product_price" sortOrder="50">
+            <settings>
+                <label translate="true">Product price</label>
+            </settings>
+        </column>
+        <column name="price" sortOrder="60">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Offered price</label>
+            </settings>
+        </column>
+        <column name="currency" sortOrder="70">
+            <settings>
+                <label translate="true">Currency</label>
+            </settings>
+        </column>
+        <column name="name" sortOrder="80">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Customer</label>
+            </settings>
+        </column>
+        <column name="email" sortOrder="90">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Email</label>
+            </settings>
+        </column>
+        <column name="message" sortOrder="100">
+            <settings>
+                <label translate="true">Message</label>
+            </settings>
+        </column>
+        <column name="status" component="Magento_Ui/js/grid/columns/select" sortOrder="110">
+            <settings>
+                <options class="Kkkonrad\PriceOffer\Model\Status"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

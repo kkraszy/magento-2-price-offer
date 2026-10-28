@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+  Luma / blank placement: under add-to-cart in the info column.
+  Hyvä has no `product.info.extrahint`, so this reference is skipped there and
+  hyva_catalog_product_view.xml places the block instead.
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="product.info.extrahint">
+            <block class="Magento\Catalog\Block\Product\View" name="kkkonrad.price.offer" before="-"
+                   template="Kkkonrad_PriceOffer::form.phtml">
+                <arguments>
+                    <argument name="offer_product" xsi:type="object">Kkkonrad\PriceOffer\Model\OfferProduct</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

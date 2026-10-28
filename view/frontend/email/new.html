@@ -1,0 +1,18 @@
+<!--@subject {{trans "Price offer for %product" product=$product_name}} @-->
+<!--@vars {
+"var product_name":"Product name",
+"var price_formatted":"Offered price",
+"var name":"Customer name",
+"var email":"Customer email"
+} @-->
+{{template config_path="design/email/header_template"}}
+
+<p>{{trans "%name (%email) offers a price for %product (SKU %sku)." name=$name email=$email product=$product_name sku=$product_sku}}</p>
+<table>
+    <tr><th align="left">{{trans "Offered price"}}</th><td>{{var price_formatted}}</td></tr>
+    <tr><th align="left">{{trans "Price at the time"}}</th><td>{{var product_price_formatted}}</td></tr>
+</table>
+{{depend message}}<p><strong>{{trans "Message"}}:</strong><br>{{var message|escape|nl2br}}</p>{{/depend}}
+<p>{{trans "Reply to this email to answer the customer, or accept/reject it in Sales &gt; Price offers."}}</p>
+
+{{template config_path="design/email/footer_template"}}

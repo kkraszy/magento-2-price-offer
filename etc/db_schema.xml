@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <!--
+      Product name and SKU are copied in at submit time: the grid needs no join,
+      and the offer still says what it was for after the product is renamed.
+    -->
+    <table name="kkkonrad_price_offer" resource="default" engine="innodb" comment="Price offers from customers">
+        <column xsi:type="int" name="offer_id" unsigned="true" nullable="false" identity="true"/>
+        <column xsi:type="int" name="product_id" unsigned="true" nullable="false"/>
+        <column xsi:type="int" name="variant_id" unsigned="true" nullable="true" comment="Chosen child of a configurable"/>
+        <column xsi:type="smallint" name="store_id" unsigned="true" nullable="false"/>
+        <column xsi:type="varchar" name="product_name" length="255" nullable="false"/>
+        <column xsi:type="varchar" name="product_sku" length="64" nullable="false"/>
+        <column xsi:type="decimal" name="product_price" scale="4" precision="20" nullable="false"/>
+        <column xsi:type="decimal" name="price" scale="4" precision="20" nullable="false"/>
+        <column xsi:type="varchar" name="currency" length="3" nullable="false"/>
+        <column xsi:type="varchar" name="name" length="255" nullable="false"/>
+        <column xsi:type="varchar" name="email" length="255" nullable="false"/>
+        <column xsi:type="text" name="message" nullable="true"/>
+        <column xsi:type="varchar" name="status" length="16" nullable="false" default="new"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP"/>
+        <column xsi:type="varchar" name="coupon_code" length="32" nullable="true"/>
+        <column xsi:type="int" name="rule_id" unsigned="true" nullable="true"/>
+        <column xsi:type="datetime" name="coupon_expires_at" nullable="true" comment="UTC"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="offer_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="KKKONRAD_PRICE_OFFER_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID"
+                    table="kkkonrad_price_offer" column="product_id"
+                    referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KKKONRAD_PRICE_OFFER_VARIANT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID"
+                    table="kkkonrad_price_offer" column="variant_id"
+                    referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KKKONRAD_PRICE_OFFER_STORE_ID_STORE_STORE_ID"
+                    table="kkkonrad_price_offer" column="store_id"
+                    referenceTable="store" referenceColumn="store_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="KKKONRAD_PRICE_OFFER_RULE_ID_SALESRULE_RULE_ID"
+                    table="kkkonrad_price_offer" column="rule_id"
+                    referenceTable="salesrule" referenceColumn="rule_id" onDelete="SET NULL"/>
+        <constraint xsi:type="unique" referenceId="KKKONRAD_PRICE_OFFER_COUPON_CODE">
+            <column name="coupon_code"/>
+        </constraint>
+        <index referenceId="KKKONRAD_PRICE_OFFER_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+    </table>
+</schema>

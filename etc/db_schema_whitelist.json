@@ -1,0 +1,34 @@
+{
+    "kkkonrad_price_offer": {
+        "column": {
+            "offer_id": true,
+            "product_id": true,
+            "store_id": true,
+            "product_name": true,
+            "product_sku": true,
+            "product_price": true,
+            "price": true,
+            "currency": true,
+            "name": true,
+            "email": true,
+            "message": true,
+            "status": true,
+            "created_at": true,
+            "coupon_code": true,
+            "rule_id": true,
+            "coupon_expires_at": true,
+            "variant_id": true
+        },
+        "index": {
+            "KKKONRAD_PRICE_OFFER_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "KKKONRAD_PRICE_OFFER_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID": true,
+            "KKKONRAD_PRICE_OFFER_STORE_ID_STORE_STORE_ID": true,
+            "KKKONRAD_PRICE_OFFER_RULE_ID_SALESRULE_RULE_ID": true,
+            "KKKONRAD_PRICE_OFFER_COUPON_CODE": true,
+            "KKKONRAD_PRICE_OFFER_VARIANT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID": true
+        }
+    }
+}

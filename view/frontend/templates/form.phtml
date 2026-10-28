@@ -1,0 +1,127 @@
+<?php
+/**
+ * "Negotiate the price" form on the product page.
+ *
+ * Same template for Hyvä and Luma, so it carries no theme's classes and no
+ * JavaScript: Tailwind does not generate classes it only sees in a module, and
+ * Luma has no Alpine. `<details>` gives the open/close for free, the browser
+ * validates the fields, and a plain POST works everywhere.
+ *
+ * The page is full-page cached, so nothing per-visitor is rendered here; both
+ * themes rewrite `form_key` inputs from the cookie on load.
+ *
+ * A configurable product gets its own variant list rather than reading the
+ * page's swatches: those are Alpine in Hyvä and a jQuery widget in Luma, and
+ * this list also shows each variant's price, which is what the offer is
+ * measured against.
+ *
+ * @var \Magento\Catalog\Block\Product\View $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$product = $block->getProduct();
+if (!$product || !$product->isSaleable()) {
+    return;
+}
+/** @var \Kkkonrad\PriceOffer\Model\OfferProduct $offerProduct */
+$offerProduct = $block->getData('offer_product');
+$variants = $offerProduct->isConfigurable($product) ? $offerProduct->getVariantOptions($product) : null;
+if ($variants === []) {
+    return;
+}
+$id = 'kk-offer-' . (int)$product->getId();
+?>
+<details class="kk-offer">
+    <summary class="kk-offer__toggle"><?= $escaper->escapeHtml(__('Negotiate the price')) ?></summary>
+    <form class="kk-offer__form" method="post"
+          action="<?= $escaper->escapeUrl($block->getUrl('priceoffer/offer/submit')) ?>">
+        <input type="hidden" name="form_key" value="<?= $escaper->escapeHtmlAttr($block->getFormKey()) ?>">
+        <input type="hidden" name="product" value="<?= (int)$product->getId() ?>">
+        <p class="kk-offer__intro"><?= $escaper->escapeHtml(__('Name your price. We will reply by email.')) ?></p>
+
+        <?php if ($variants): ?>
+            <label for="<?= $id ?>-variant"><?= $escaper->escapeHtml(__('Variant')) ?></label>
+            <select id="<?= $id ?>-variant" name="variant" required>
+                <option value=""><?= $escaper->escapeHtml(__('Choose a variant')) ?></option>
+                <?php foreach ($variants as $variantId => $label): ?>
+                    <option value="<?= (int)$variantId ?>"><?= $escaper->escapeHtml($label) ?></option>
+                <?php endforeach; ?>
+            </select>
+        <?php endif; ?>
+
+        <label for="<?= $id ?>-price"><?= $escaper->escapeHtml(__('Your price')) ?></label>
+        <input id="<?= $id ?>-price" name="price" type="number" min="0.01" step="0.01" inputmode="decimal" required>
+
+        <label for="<?= $id ?>-name"><?= $escaper->escapeHtml(__('Your name')) ?></label>
+        <input id="<?= $id ?>-name" name="name" type="text" maxlength="255" autocomplete="name" required>
+
+        <label for="<?= $id ?>-email"><?= $escaper->escapeHtml(__('Email')) ?></label>
+        <input id="<?= $id ?>-email" name="email" type="email" maxlength="255" autocomplete="email" required>
+
+        <label for="<?= $id ?>-message"><?= $escaper->escapeHtml(__('Message (optional)')) ?></label>
+        <textarea id="<?= $id ?>-message" name="message" rows="3" maxlength="2000"></textarea>
+
+        <button class="kk-offer__submit" type="submit"><?= $escaper->escapeHtml(__('Send offer')) ?></button>
+    </form>
+</details>
+
+<style>
+    /* em, not rem: Luma's root font-size is 10px (62.5%), Hyvä's is 16px */
+    .kk-offer {
+        margin: 1em 0;
+        border: 1px solid rgb(0 0 0 / 0.15);
+        border-radius: 0.375em;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .kk-offer__toggle {
+        cursor: pointer;
+        padding: 0.75em 1em;
+        font-weight: 600;
+        /* Luma sets summary to display:block, which hides the marker */
+        display: list-item;
+    }
+    .kk-offer[open] .kk-offer__toggle {
+        border-bottom: 1px solid rgb(0 0 0 / 0.1);
+    }
+    .kk-offer__form {
+        display: grid;
+        gap: 0.375em;
+        padding: 1em;
+        margin: 0;
+    }
+    .kk-offer__intro {
+        margin: 0 0 0.5em;
+        opacity: 0.75;
+    }
+    .kk-offer__form label {
+        font-weight: 500;
+        margin: 0.25em 0 0;
+    }
+    .kk-offer__form input,
+    .kk-offer__form select,
+    .kk-offer__form textarea {
+        width: 100%;
+        box-sizing: border-box;
+        font: inherit;
+        padding: 0.5em 0.625em;
+        border: 1px solid rgb(0 0 0 / 0.25);
+        border-radius: 0.25em;
+        background: #fff;
+        color: inherit;
+        height: auto;
+    }
+    .kk-offer__submit {
+        margin-top: 0.75em;
+        justify-self: start;
+        font: inherit;
+        font-weight: 600;
+        padding: 0.625em 1.25em;
+        border: 0;
+        border-radius: 0.25em;
+        background: #111827;
+        color: #fff;
+        cursor: pointer;
+    }
+    .kk-offer__submit:hover { background: #374151; }
+</style>

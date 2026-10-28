@@ -1,0 +1,27 @@
+<!--@subject {{trans "Your offer for %product: %status" product=$product_name status=$status_label}} @-->
+<!--@vars {
+"var product_name":"Product name",
+"var price_formatted":"Offered price",
+"var status_label":"Status",
+"var name":"Customer name",
+"var coupon_code":"Coupon code",
+"var buy_url":"Buy link",
+"var expires_formatted":"Coupon valid until"
+} @-->
+{{template config_path="design/email/header_template"}}
+
+<p>{{trans "Hello %name," name=$name}}</p>
+{{if is_accepted}}
+<p>{{trans "Good news: we accept your offer of %price for %product." price=$price_formatted product=$product_name}}</p>
+{{else}}
+<p>{{trans "Thank you for your offer of %price for %product. Unfortunately we cannot accept it." price=$price_formatted product=$product_name}}</p>
+{{/if}}
+{{depend coupon_code}}
+<table cellspacing="0" cellpadding="0" border="0"><tr><td align="center" bgcolor="#111827" style="border-radius:4px;">
+    <a href="{{var buy_url}}" style="display:inline-block;padding:12px 24px;color:#ffffff;text-decoration:none;font-weight:bold;">{{trans "Buy for %price" price=$price_formatted}}</a>
+</td></tr></table>
+<p>{{trans "The button adds the product to your cart with the price applied. You can also enter code %code in the cart." code=$coupon_code}}</p>
+<p><strong>{{trans "The offer is valid until %date, for one unit and one order." date=$expires_formatted}}</strong></p>
+{{/depend}}
+
+{{template config_path="design/email/footer_template"}}

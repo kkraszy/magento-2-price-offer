@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- Hyvä adds `hyva_*` handles on its themes only; Luma never loads this file -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="product.info.additional">
+            <block class="Magento\Catalog\Block\Product\View" name="kkkonrad.price.offer"
+                   template="Kkkonrad_PriceOffer::form.phtml">
+                <arguments>
+                    <argument name="offer_product" xsi:type="object">Kkkonrad\PriceOffer\Model\OfferProduct</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
